@@ -2,15 +2,17 @@
     <head>
         <title>Video Processing Test</title>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script src="js/jcanvas.min.js"></script>
+        <script src="js/bower_components/resemblejs/resemble.js"></script>
         <script src="js/video.js"></script>
     </head>
-    <body style="background:black">
+    <body style="background:white">
       <div id="theater">
         <video id="video" src="http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv" 
-        crossOrigin = "true "controls="false"></video>
-        <canvas id="canvas"></canvas>
+        crossOrigin = "true "controls="false"
+        height="500px" width="500px" style="display:block"></video>
+        <canvas id="canvas" style="display:none"></canvas>
         <label>
-          <br />Try to play me :)</label>
         <br />
       </div>
       
