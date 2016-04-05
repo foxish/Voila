@@ -2,6 +2,8 @@ $(function() {
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
   var video = document.getElementById('video');
+  var voila = $('#voila');
+  insertMap();
   // video.playbackRate = 10.0;
   // video.addEventListener('play', function() {
   //   var $this = this; //cache
@@ -20,12 +22,12 @@ $(function() {
 
   video.addEventListener('seeked', function() {
       generateThumbnail(i);
-      i += 100;
+      i += 5;
       /// if we are not passed end, seek to next interval
       if (i <= video.duration) {
           video.currentTime = i;
       } else {
-          insertMap();
+          
       }
   }, false);
   
@@ -33,7 +35,7 @@ $(function() {
   function generateThumbnail(i) {     
     ctx.drawImage(video, 0, 0);
     var dataURL = canvas.toDataURL();
-    compareImages(dataURL, prevImage);
+    compareImages(dataURL, prevImage, i);
     prevImage = dataURL;
     
     //create img
@@ -46,7 +48,7 @@ $(function() {
     document.getElementById('thumbnailContainer').appendChild(img);
   }
   
-  function compareImages(imgD1, imgD2) {
+  function compareImages(imgD1, imgD2, i) {
     if(imgD1 === "" || imgD2 === "") {
       return;
     }
@@ -55,20 +57,36 @@ $(function() {
       // create diffy
       var span = document.createElement('span');
       span.innerHTML = data.misMatchPercentage;
+      
+      // check for some arbitrary limit we later derive
+      if(data.misMatchPercentage > 60) {
+        // new scene detected
+        insertMarker((i / ((1.0) * video.duration))*600);
+        console.log(i);
+      }
+      
       document.getElementById('thumbnailContainer').appendChild(span);
     });
   }
   
-  function insertMap(){
-    var canvas = jQuery("<canvas>", {id: "voila"});
-    $(canvas).drawRect({
-      fillStyle: 'red',
-      x: 0, y: 0,
-      width: jQuery('#video').width(),
-      height: 50
+  function insertMarker(x_at){    
+    // Draw a rect
+    $(voila).drawRect({
+      layer: true,
+      fillStyle: "green",
+      x: x_at, y: 5,
+      width: 2, height: 10
     });
-    $(canvas).width = jQuery('#video').width();
-    jQuery("#video").after(canvas);
+  }
+  
+  function insertMap(){
+    $(voila).drawRect({
+      layer: true,
+      fillStyle: 'yellow',
+      x: 0, y: 0,
+      width: 600,
+      height: 20
+    });
   }
   
 });
