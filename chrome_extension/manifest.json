@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.youtube.com/watch*"],
-      "js": ["js/jquery.min.js", "js/jcanvas.min.js", "js/voila.js"],
+      "js": ["js/jquery.min.js", "js/jcanvas.min.js", "js/voila.js","js/video.js"],
       "run_at": "document_end"
     }
   ],
