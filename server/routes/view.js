@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
     //Move into common method
 
     req.body['videoID'] = 100;
-    var query = 'SELECT * FROM data WHERE videoID='+req.body['videoID'];
+    var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
 
     db.all(query, function(err, rows) {
         //Convert back JSON from string pattern
@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
     console.log(req.body);
-
+    
     //Move into common method
     var file = "./test.db";
     var db = new sqlite3.Database(file);
@@ -48,7 +48,7 @@ router.post('/', function(req, res) {
 
     db.close();
 
-    res.send('respond with null');
+    res.send('successfully added to database');
 });
 
 module.exports = router;
