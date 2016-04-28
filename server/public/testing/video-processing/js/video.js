@@ -29,7 +29,11 @@ $(function() {
     var raw_loc = fraction * video.duration;
     for(var j = 0; j < navigation_pts.length; ++j) {
       if(raw_loc < navigation_pts[j]) {
-        video.currentTime = navigation_pts[Math.max(j-1, 0)];
+        if(j == 0) {
+           video.currentTime = 0;
+        } else {
+          video.currentTime = navigation_pts[Math.max(j-1, 0)];
+        }
         return;
       }
     }
@@ -65,7 +69,7 @@ $(function() {
   voila_el.addEventListener('mousedown', navigateFn, false);
 
   function generateThumbnail(i) {     
-    ctx.drawImage(video, 0, 0);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     var dataURL = canvas.toDataURL();
     compareImages(dataURL, prevImage, i);
     prevImage = dataURL;
