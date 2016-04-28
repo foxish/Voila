@@ -4,22 +4,20 @@
 
 var express = require('express');
 var router = express.Router();
-
 var sqlite3 = require('sqlite3').verbose();
+var file = "./test.db";
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
     //Move into common method
-    var file = "./test.db";
     var db = new sqlite3.Database(file);
 
     db.serialize(function() {
         db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
     });
-    //Move into common method
 
-    req.body['videoID'] = 100;
+    // req.body['videoID'] = 100;
     var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
 
     db.all(query, function(err, rows) {
