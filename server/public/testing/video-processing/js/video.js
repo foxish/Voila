@@ -10,6 +10,17 @@ $(function() {
   var API_URL = "http://voila-foxish.c9users.io/view";
   var i = 0;
   var heat = null;
+  
+  var summarizeFn = function() {
+      generateThumbnail(i);
+      i += 5;
+      /// if we are not passed end, seek to next interval
+      if (i <= video.duration) {
+          video.currentTime = i;
+      } else {
+          video.removeEventListener("seeked", summarizeFn);
+      }
+  };
 
   // insert the heatmap canvas.
   insertMap();
@@ -26,16 +37,7 @@ $(function() {
 	    	  if(heat == 0){ //stupid JS cast!
               console.log("Generating local summary.");
 	    	      // generate a client-side summary.
-              video.addEventListener('seeked', function() {
-                  generateThumbnail(i);
-                  i += 5;
-                  /// if we are not passed end, seek to next interval
-                  if (i <= video.duration) {
-                      video.currentTime = i;
-                  } else {
-                      
-                  }
-              }, false);
+              video.addEventListener('seeked', summarizeFn, false);
               video.currentTime = i;
 	    	  } else {
 	    	    console.log("Using pre-generated summary.");
