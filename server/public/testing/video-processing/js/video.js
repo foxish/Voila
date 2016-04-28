@@ -4,6 +4,7 @@ $(function() {
   var ctx = canvas.getContext('2d');
   var video = document.getElementById('video');
   var voila = $('#voila');
+  var voila_el = document.getElementById('voila');
   var prevImage = "";
   var navigation_pts = [];
   var GRANULARITY = 30;
@@ -13,18 +14,30 @@ $(function() {
   
   var summarizeFn = function() {
       generateThumbnail(i);
-      i += 5;
+      i += 20;
       /// if we are not passed end, seek to next interval
       if (i <= video.duration) {
           video.currentTime = i;
       } else {
           video.removeEventListener("seeked", summarizeFn);
+          video.currentTime = 0;
       }
   };
+  
+  var navigateFn = function(evt){
+    var fraction = ((evt.clientX - $(voila).offset().left) / $(voila).width());
+    var raw_loc = fraction * video.duration;
+    for(var j = 0; j < navigation_pts.length; ++j) {
+      if(raw_loc < navigation_pts[j]) {
+        video.currentTime = navigation_pts[Math.max(j-1, 0)];
+        return;
+      }
+    }
+    video.currentTime = navigation_pts[navigation_pts.length - 1];
+  }
 
   // insert the heatmap canvas.
   insertMap();
-  
   video.addEventListener('loadeddata', function() {
       $.ajax({
 	    	type: "GET",
@@ -49,7 +62,8 @@ $(function() {
      }
     });
   }, false);
-  
+  voila_el.addEventListener('mousedown', navigateFn, false);
+
   function generateThumbnail(i) {     
     ctx.drawImage(video, 0, 0);
     var dataURL = canvas.toDataURL();
@@ -79,18 +93,19 @@ $(function() {
       if(data.misMatchPercentage > 60) {
         // new scene detected
         insertMarker((i / video.duration));
+        navigation_pts.push(i);
       }
       
       document.getElementById('thumbnailContainer').appendChild(span);
     });
   }
-  function insertMarker(x_at){    
+  function insertMarker(x_at){
     // Draw a rect
     $(voila).drawRect({
       layer: true,
       fromCenter: false,
       fillStyle: "green",
-      x: (x_at * $(voila).width()), y: 0,
+      x: (x_at * $(voila).width() * 0.6), y: 0,
       width: 2, height: 10
     });
   }
