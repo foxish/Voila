@@ -10,12 +10,14 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["js/jquery.min.js", "js/resemble.js", "js/jcanvas.min.js", "js/voila.js", "js/video.js"],
+      "js": ["js/jquery.min.js", "js/popup.js", "js/resemble.js", "js/jcanvas.min.js", "js/voila.js", "js/video.js"],
       "run_at": "document_end"
     }
   ],
   "permissions": [
     "tabs",
-    "tabs", "<all_urls>"
+    "tabs", 
+    "<all_urls>",
+    "http://voila-foxish.c9users.io/view"
   ]
 }

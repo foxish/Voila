@@ -5,7 +5,8 @@
 	<!-- jquery & jquery-ui-->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-ui-1.10.0.custom.min.js"></script>
-	
+  <script src="js/popup.js"></script>
+
 	<!-- style -->
 	<link type="text/css" rel="stylesheet" href="css/popup.css" media="screen" />
 	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -14,7 +15,11 @@
   <div id="header"><h4>Voila</h4></div>
   <div id="mainwrap">
   	<div id="cardstyle">
-  		Testing...
+  		<form id="cForm">
+        Preprocessing Time (seconds): <input type="text" id="time" name="time" value="100"/>
+        Preprocessing BW (Megabytes): <input type="text" id="bw" name="bw" value="10"/><br/><br/>
+        <input type="submit" value="Voila!"/>
+      </form>
   	</div>
   </div>
 </body>

@@ -1,5 +1,42 @@
-$(function() {
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if(request.action == 'start') {
+      console.log(request.time, request.bw);
+      setup_helper();
+    }
+});
+
+
+_getJSON = function(url, callback) {
+  console.log("calling JSON");
+  chrome.extension.sendRequest({action:'getJSON',url:url}, callback);
+}
+_ajax = function(url, callback, type, async) {
+  console.log("calling ajax");
+  chrome.extension.sendRequest({action:'ajax', url:url, type:type, async:async}, callback);
+}
+
+_get = function(url, callback) {
+  console.log("sending get");
+  chrome.extension.sendRequest({action:'get', url:url}, callback);
+}
+
+_post = function(url, data, callback) {
+  console.log("sending post");
+  chrome.extension.sendRequest({action:'post', data: data, url:url}, callback);
+}
+
+
+
+$(function() { });
+function setup_helper() {
   var video = document.getElementsByTagName('video')[0];
+
+  // make sure video does not autoplay
+  $(video).attr("autoplay", false);
+  $(video).attr("preload", false);
+  video.autoplay = false;
+
 
   // create thumbnails canvas
   var tCanvas = $('<canvas/>',{'id':'thumbnails','Width':100,'Height':200});
@@ -24,7 +61,7 @@ $(function() {
   var prevImage = "";
   var navigation_pts = [];
   var GRANULARITY = 30;
-  var API_URL = "//voila-foxish.c9users.io/view";
+  var API_URL = "http://voila-foxish.c9users.io/view";
   var i = 0;
   var heat = null;
   
@@ -56,32 +93,63 @@ $(function() {
     video.currentTime = navigation_pts[navigation_pts.length - 1];
   }
 
-  // insert the heatmap canvas.
+  var ajaxFn = function(result){
+      var heat = JSON.parse(result);
+      console.log(heat);
+      if(heat == 0){ //stupid JS cast!
+          console.log("Generating local summary.");
+          // generate a client-side summary.
+          video.addEventListener('seeked', summarizeFn, false);
+          video.currentTime = i;
+      } else {
+        console.log("Using pre-generated summary.");
+        for(var p=0; p < heat.length; p++){
+          // generate the green spots/thumbnails based the data returned
+          generateThumbnail(heat[p][0]); // heat[p][0] indicates the start time
+        }
+      }
+  };
+
+  // insert the heatmap canvas. url, callback, type, async
   insertMap();
-  video.addEventListener('loadeddata', function() {
-      $.ajax({
-        type: "GET",
-        url: API_URL,
-        dataType: "json",
-        data:{"videoId":"100" /* create video id from URL in extension */ },
-        success: function(result){
-          heat = JSON.parse(result);
-          console.log(heat);
-          if(heat == 0){ //stupid JS cast!
-              console.log("Generating local summary.");
-              // generate a client-side summary.
-              video.addEventListener('seeked', summarizeFn, false);
-              video.currentTime = i;
-          } else {
-            console.log("Using pre-generated summary.");
-            for(var p=0; p < heat.length; p++){
-              // generate the green spots/thumbnails based the data returned
-              generateThumbnail(heat[p][0]); // heat[p][0] indicates the start time
-            }
-          }
-     }
-    });
-  }, false);
+
+  $.ajax({
+    type: "GET",
+    url: API_URL,
+    async: false,
+    dataType: "json",
+    data:{"videoId":"100" /* create video id from URL in extension */ },
+    success: ajaxFn
+  });  
+
+
+
+  // video.addEventListener('loadeddata', function() {
+  //     $('video').pause();
+
+  //     $.ajax({
+  //       type: "GET",
+  //       url: API_URL,
+  //       dataType: "json",
+  //       data:{"videoId":"100" /* create video id from URL in extension */ },
+  //       success: function(result){
+  //         heat = JSON.parse(result);
+  //         console.log(heat);
+  //         if(heat == 0){ //stupid JS cast!
+  //             console.log("Generating local summary.");
+  //             // generate a client-side summary.
+  //             video.addEventListener('seeked', summarizeFn, false);
+  //             video.currentTime = i;
+  //         } else {
+  //           console.log("Using pre-generated summary.");
+  //           for(var p=0; p < heat.length; p++){
+  //             // generate the green spots/thumbnails based the data returned
+  //             generateThumbnail(heat[p][0]); // heat[p][0] indicates the start time
+  //           }
+  //         }
+  //    }
+  //   });
+  // }, false);
   voila_el.addEventListener('mousedown', navigateFn, false);
 
   function generateThumbnail(i) {     
@@ -175,7 +243,7 @@ $(function() {
           }
         });
   }
-});
+}
 
 
 // $(document).ready(function (){
