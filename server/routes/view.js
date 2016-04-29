@@ -17,7 +17,6 @@ router.get('/', function(req, res, next) {
         db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
 
-    req.body['videoID'] = 100;
     var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
 
     db.all(query, function(err, rows) {
