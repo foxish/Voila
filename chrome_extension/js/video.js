@@ -8,6 +8,8 @@ chrome.runtime.onMessage.addListener(
 
 $(function() { });
 
+var TEST_JSON = '[{"start":0,"end":15,"score":0.1},{"start":15,"end":20,"score":0.6},{"start":20,"end":25,"score":0.1},{"start":25,"end":340,"score":0.5},{"start":340,"end":829,"score":0.9},{"start":829.05625,"end":904.05625,"score":0.2},{"start":904.05625,"end":2611.506250000001,"score":0.5},{"start":2611.506250000001,"end":2686.506250000001,"score":0.0},{"start":2611.506250000001,"end":2686.506250000001,"score":0.0},{"start":2686.506250000001,"end":3001.506250000001,"score":0.0},{"start":3001.506250000001,"end":3316.506250000001,"score":0.2}]';
+
 function setup_helper() {
   var video = document.getElementsByTagName('video')[0];
 
@@ -40,6 +42,7 @@ function setup_helper() {
   var API_URL = "https://voila-foxish.c9users.io/view";
   var i = 0;
   var heat = null;
+  var COLOR_CHANGE_TIMEOUT = 500;
   
   var summarizeFn = function() {
       generateThumbnail(i);
@@ -53,7 +56,7 @@ function setup_helper() {
       }
   };
 
-  var colorLocation = function(j){
+  var colorLocation = function(j, color){
     var start = 0;
     var end = 0;
 
@@ -72,9 +75,9 @@ function setup_helper() {
     $(voila).drawRect({
       layer: true,
       fromCenter: false,
-      fillStyle: "red",
-      x: (start/video.duration) * video.clientWidth, y: 0,
-      width: ((end-start)/video.duration) * video.clientWidth, height: 25
+      fillStyle: color,
+      x: ((start/video.duration) * video.clientWidth) + 2, y: 0,
+      width: (((end-start)/video.duration) * video.clientWidth) - 2, height: 25
     });
   }
   
@@ -85,17 +88,20 @@ function setup_helper() {
       if(raw_loc < navigation_pts[j]) {
         if(j == 0) {
            video.currentTime = 0;
-           colorLocation(0);
+           // colorLocation(0, "green");
+           // setTimeout(function(){ colorLocation(0, "yellow"); }, COLOR_CHANGE_TIMEOUT);
         } else {
           video.currentTime = navigation_pts[Math.max(j-1, 0)];
-          colorLocation(Math.max(j-1, 0));
+          // colorLocation(Math.max(j-1, 0), "green");
+          // setTimeout(function(){ colorLocation(Math.max(j-1, 0), "yellow"); }, COLOR_CHANGE_TIMEOUT);
         }
         
         return;
       }
     }
     video.currentTime = navigation_pts[navigation_pts.length - 1];
-    colorLocation(navigation_pts.length - 1);
+    // colorLocation(navigation_pts.length - 1, "green");
+    // setTimeout(function(){ colorLocation(navigation_pts.length - 1, "yellow"); }, COLOR_CHANGE_TIMEOUT);
   }
 
   var ajaxFn = function(result){
@@ -108,23 +114,27 @@ function setup_helper() {
           video.currentTime = i;
       } else {
         console.log("Using pre-generated summary.");
-        for(var p=0; p < heat.length; p++){
-          // generate the green spots/thumbnails based the data returned
-          generateThumbnail(heat[p][0]); // heat[p][0] indicates the start time
+        var heat = JSON.parse(TEST_JSON);
+        for(var j=0; j < heat.length; j++){
+          navigation_pts.push(heat[j].end);
+        }
+        for(var j=0; j < heat.length; j++){
+          colorLocation(j, "hsl(348, 100%, " + (1.0 - heat[j].score) * 100 + "%)");
         }
       }
   };
 
   // insert the heatmap canvas. url, callback, type, async
   insertMap();
-  $.ajax({
-    type: "GET",
-    url: API_URL,
-    async: false,
-    dataType: "json",
-    data:{"videoId":"100" /* create video id from URL in extension */ },
-    success: ajaxFn
-  }); 
+  // $.ajax({
+  //   type: "GET",
+  //   url: API_URL,
+  //   async: false,
+  //   dataType: "json",
+  //   data:{"videoID":"" /* create video id from URL in extension */ },
+  //   success: ajaxFn
+  // }); 
+  ajaxFn("[]");
   voila_el.addEventListener('mousedown', navigateFn, false);
 
   function generateThumbnail(i) {     
