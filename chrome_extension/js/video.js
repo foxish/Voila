@@ -52,6 +52,31 @@ function setup_helper() {
           video.currentTime = 0;
       }
   };
+
+  var colorLocation = function(j){
+    var start = 0;
+    var end = 0;
+
+    // fix later
+    if(j == 0) {
+      end = navigation_pts[0];
+    } else if (j == navigation_pts.length - 1) {
+      start = navigation_pts[navigation_pts.length - 1];
+      end = video.duration;
+    } else {
+      start = navigation_pts[j];
+      end = navigation_pts[j+1];
+    }
+
+    // Draw a rect
+    $(voila).drawRect({
+      layer: true,
+      fromCenter: false,
+      fillStyle: "red",
+      x: (start/video.duration) * video.clientWidth, y: 0,
+      width: ((end-start)/video.duration) * video.clientWidth, height: 25
+    });
+  }
   
   var navigateFn = function(evt){
     var fraction = ((evt.clientX - $(voila).offset().left) / $(voila).width());
@@ -60,13 +85,17 @@ function setup_helper() {
       if(raw_loc < navigation_pts[j]) {
         if(j == 0) {
            video.currentTime = 0;
+           colorLocation(0);
         } else {
           video.currentTime = navigation_pts[Math.max(j-1, 0)];
+          colorLocation(Math.max(j-1, 0));
         }
+        
         return;
       }
     }
     video.currentTime = navigation_pts[navigation_pts.length - 1];
+    colorLocation(navigation_pts.length - 1);
   }
 
   var ajaxFn = function(result){
@@ -164,10 +193,6 @@ function setup_helper() {
 
   function generateJSON() {
     // assign some heatmapping.
-
-
-
-
 
   }
 
