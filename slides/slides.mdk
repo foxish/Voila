@@ -24,9 +24,9 @@ Beamer Theme  : singapore
 
 * {.fragment} Use viewership patterns to find and visually represent interesting sections of video in a heat-map.
 <!-- image here -->
-* {.fragment} Challenge: What if insufficient data to generate a heat-map?
-  * Generate meaningful navigation points for initial viewers of a particular video.
-  * Must not skew results of early users.
+* {.fragment} Challenge: What if there isn't sufficient data to generate a heat-map?
+  * {.fragment} Generate meaningful navigation points for initial viewers of a particular video.
+  * {.fragment} Must not skew results of early users.
 * {.fragment} Use video analysis to find segment boundaries within videos.
 * {.fragment} Use these techniques to generate summaries of streaming video.
 
@@ -63,21 +63,21 @@ Beamer Theme  : singapore
 
 ## Demo: video processing
 
-<video data-autoplay src="res/basic_gen.webm" height="500px" width="400px" controls loop></video>
+<video data-autoplay src="res/basic_gen.webm" height="100%" width="100%" controls loop></video>
   
 ## Demo: Navigation
 
-<video data-autoplay src="res/basic_navigation.webm" height="500px" width="400px" controls loop></video>
+<video data-autoplay src="res/basic_navigation.webm" height="100%" width="100%" controls loop></video>
 
 ## Demo: Heat-map
 
-<video data-autoplay src="res/heatmap.webm" height="500px" width="400px" controls loop></video>
+<video data-autoplay src="res/heatmap.webm" height="100%" width="100%" controls loop></video>
 
 # Scheduled work
 
-* Increasing robustness of video analysis and testing across wide varieties of video types.
-* Implementing auto-summarization based on displayed heatmap.
-* Evaluating the effectiveness of generated summary.
+* {.fragment} Increasing robustness of video analysis and testing across wide varieties of video types.
+* {.fragment} Implementing auto-summarization based on displayed heatmap.
+* {.fragment} Evaluating the effectiveness of generated summary.
 
 # Future Work
 
