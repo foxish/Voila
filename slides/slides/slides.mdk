@@ -2,63 +2,96 @@
 Title         : Voilà
 Sub Title     : Improved Navigation for Streaming Video Content
 Author        : Anirudh Ramanathan
-<!-- Dunno how to put multiple
-Ankur Prasad
-Arun Krishnakumar
-Sai Sujith Reddy
-Siddhartha Karthik Copesetty
--->
+Author        : Ankur Prasad
+Author        : Arun Krishnakumar
+Author        : Sai Sujith Reddy
+Author        : Siddhartha Karthik Copesetty
+Reveal Theme  : moon
+Beamer Theme  : singapore
 
 [TITLE]
 
-# Content
-
-[TOC]
-
 # Introduction
+## Problem Statement
 
-* Analyses the video to find segment boundaries which provide a coherent view of the entire video.
-* The segment boundaries displayed can be used to navigate to different sections of the video.
-* They may be further refined by the use of external signals such as viewer behavior data.
-* Eventually, they can be used for summarization of the video.
-
-
-# User attributes
-
-* Age
-* Gender
-* Geographical Location
-* Time
-* General Interests (such as: political leanings, hobbies, profession etc).
-
-# Initial Users
-
-* How do we solve the problem when there is no data present to generate a heat map?
-* *Challenges* 
-  * Generate meaningful summary points for initial viewers of a particular video.
-  * Should not skew results of early users.
-
-# Local Summarization
-# Heat map
-# Architecture
-
-* Implemented as a Chrome Extension
-* Client-server architecture (Model-View-Controller)
-  * JavaScript front-end 
-  * Node backend 
-  * SQLite3 DB
+* {.fragment} Longer video content, shorter attention spans.
+* {.fragment} Navigation through streaming videos by scrubbing is slow.
+* {.fragment} Example: Video lectures, seminars and technical presentation videos.
+* {.fragment} Can we do better?
 
 
-# Design & Rationale
-* Showing randomly generated summaries to new viewers
-* Use section boundaries and measures of quality to determine summary.
-* The good
-  * Helps the first viewers.
-* The bad
-  * May not work well for all videos.
-* Build knowledge of user section viewership based on age and demographic to improve summaries
+## Our Solution
+
+* {.fragment} Use viewership patterns to find and visually represent interesting sections of video in a heat-map.
+<!-- image here -->
+* {.fragment} Challenge: What if insufficient data to generate a heat-map?
+  * Generate meaningful navigation points for initial viewers of a particular video.
+  * Must not skew results of early users.
+* {.fragment} Use video analysis to find segment boundaries within videos.
+* {.fragment} Use these techniques to generate summaries of streaming video.
+
+# Implementation
+
+## Goals
+
+* {.fragment} Make technique available to a large class of streaming video.
+* {.fragment} Allow user constraints on video analysis such as bandwidth and pre-processing time.
+
+## Client-side processing
+
+* {.fragment} Google Chrome Extension.
+~~ Figure { #fig-p0 .fragment; float: right; margin-left: 1em; margin-top: -1.5em}
+![extension]
+~~
+
+* {.fragment} Fetches segment boundaries and heat-map from the backend.
+* {.fragment} Visually presents the relative popularity of various segments of streaming video when available.
+* {.fragment} Performs video analysis on the client using JavaScript.
+
+## Video Analysis
+
+* {.fragment} Perform sampling of video frames for analysis in pre-processing step.
+* {.fragment} resemble.js used to compute grayscale 'diff' between successive video frames.
+* {.fragment} Adaptively change sampling frequency (delta) based on previous 'diff', bandwidth and time constraints.
+
+## Server-side processing
+
+* {.fragment} RESTful API.
+  * {.fragment} Node.js/Express backend. 
+  * {.fragment} SQLite3 as test DB.
+* {.fragment} Histogram-based computation to determine relative popularity of different video segments.
+
+## Demo: video processing
+
+<video data-autoplay src="res/basic_gen.webm" height="100%" width="100%" controls loop></video>
+  
+## Demo: Navigation
+
+<video data-autoplay src="res/basic_navigation.webm" height="100%" width="100%" controls loop></video>
+
+## Demo: Heat-map
+
+<video data-autoplay src="res/heatmap.webm" height="100%" width="100%" controls loop></video>
+
+# Scheduled work
+
+* {.fragment} Increasing robustness of video analysis and testing across wide varieties of video types.
+* {.fragment} Implementing auto-summarization based on displayed heatmap.
+* {.fragment} Evaluating the effectiveness of generated summary.
 
 # Future Work
 
-* Currently videos are segmented relying solely on video attributes - audio attributes could also be considered in segmentation.
-* Button to quickly skip between segments.
+* {.fragment} Incorporate various demographic characteristics in viewership pattern:
+  * Age
+  * Gender
+  * Geographical Location
+  * Time
+  * General Interests (such as: political leanings, hobbies, profession etc).
+* {.fragment} Implement clustering techniques to identify scenes and similar segments of videos.
+
+
+# Thanks!
+
+
+[yt]: res/yt.png "Youtube" { height: 90% }
+[extension]: res/extension.jpg "Voila" { height: 90% }
