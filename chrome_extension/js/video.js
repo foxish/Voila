@@ -88,20 +88,20 @@ function setup_helper() {
       if(raw_loc < navigation_pts[j]) {
         if(j == 0) {
            video.currentTime = 0;
-           // colorLocation(0, "green");
-           // setTimeout(function(){ colorLocation(0, "yellow"); }, COLOR_CHANGE_TIMEOUT);
+           colorLocation(0, "green");
+           setTimeout(function(){ colorLocation(0, "yellow"); }, COLOR_CHANGE_TIMEOUT);
         } else {
           video.currentTime = navigation_pts[Math.max(j-1, 0)];
-          // colorLocation(Math.max(j-1, 0), "green");
-          // setTimeout(function(){ colorLocation(Math.max(j-1, 0), "yellow"); }, COLOR_CHANGE_TIMEOUT);
+          colorLocation(Math.max(j-1, 0), "green");
+          setTimeout(function(){ colorLocation(Math.max(j-1, 0), "yellow"); }, COLOR_CHANGE_TIMEOUT);
         }
         
         return;
       }
     }
     video.currentTime = navigation_pts[navigation_pts.length - 1];
-    // colorLocation(navigation_pts.length - 1, "green");
-    // setTimeout(function(){ colorLocation(navigation_pts.length - 1, "yellow"); }, COLOR_CHANGE_TIMEOUT);
+    colorLocation(navigation_pts.length - 1, "green");
+    setTimeout(function(){ colorLocation(navigation_pts.length - 1, "yellow"); }, COLOR_CHANGE_TIMEOUT);
   }
 
   var ajaxFn = function(result){
