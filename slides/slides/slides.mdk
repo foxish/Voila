@@ -1,0 +1,64 @@
+[INCLUDE=presentation]
+Title         : Voilà
+Sub Title     : Improved Navigation for Streaming Video Content
+Author        : Anirudh Ramanathan
+<!-- Dunno how to put multiple
+Ankur Prasad
+Arun Krishnakumar
+Sai Sujith Reddy
+Siddhartha Karthik Copesetty
+-->
+
+[TITLE]
+
+# Content
+
+[TOC]
+
+# Introduction
+
+* Analyses the video to find segment boundaries which provide a coherent view of the entire video.
+* The segment boundaries displayed can be used to navigate to different sections of the video.
+* They may be further refined by the use of external signals such as viewer behavior data.
+* Eventually, they can be used for summarization of the video.
+
+
+# User attributes
+
+* Age
+* Gender
+* Geographical Location
+* Time
+* General Interests (such as: political leanings, hobbies, profession etc).
+
+# Initial Users
+
+* How do we solve the problem when there is no data present to generate a heat map?
+* *Challenges* 
+  * Generate meaningful summary points for initial viewers of a particular video.
+  * Should not skew results of early users.
+
+# Local Summarization
+# Heat map
+# Architecture
+
+* Implemented as a Chrome Extension
+* Client-server architecture (Model-View-Controller)
+  * JavaScript front-end 
+  * Node backend 
+  * SQLite3 DB
+
+
+# Design & Rationale
+* Showing randomly generated summaries to new viewers
+* Use section boundaries and measures of quality to determine summary.
+* The good
+  * Helps the first viewers.
+* The bad
+  * May not work well for all videos.
+* Build knowledge of user section viewership based on age and demographic to improve summaries
+
+# Future Work
+
+* Currently videos are segmented relying solely on video attributes - audio attributes could also be considered in segmentation.
+* Button to quickly skip between segments.
