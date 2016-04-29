@@ -24,11 +24,11 @@ Beamer Theme  : singapore
 
 * {.fragment} Use viewership patterns to find and visually represent interesting sections of video in a heat-map.
 <!-- image here -->
-* {.fragment} Challenges insufficient data to generate a heat-map?
+* {.fragment} Challenge: What if insufficient data to generate a heat-map?
   * Generate meaningful navigation points for initial viewers of a particular video.
   * Must not skew results of early users.
 * {.fragment} Use video analysis to find segment boundaries within videos.
-* {.fragment} Use navigation technique to generate summaries of streaming video.
+* {.fragment} Use these techniques to generate summaries of streaming video.
 
 # Implementation
 
@@ -36,14 +36,13 @@ Beamer Theme  : singapore
 
 * {.fragment} Make technique available to a large class of streaming video.
 * {.fragment} Allow user constraints on video analysis such as bandwidth and pre-processing time.
-* {.fragment} Present visually the relative popularity of various segments of streaming video.
 
 ## Client-side processing
 
 * {.fragment} Google Chrome Extension.
-<!--
-create image showing it
--->
+~~ Figure { #fig-p0 .fragment; float: right; margin-left: 1em; margin-top: -1.5em}
+![extension]
+~~
 
 * {.fragment} Fetches segment boundaries and heat-map from the backend.
 * {.fragment} Visually presents the relative popularity of various segments of streaming video when available.
@@ -55,10 +54,6 @@ create image showing it
 * {.fragment} resemble.js used to compute grayscale 'diff' between successive video frames.
 * {.fragment} Adaptively change sampling frequency (delta) based on previous 'diff', bandwidth and time constraints.
 
-## Demo
-
-
-
 ## Server-side processing
 
 * {.fragment} RESTful API.
@@ -66,11 +61,17 @@ create image showing it
   * {.fragment} SQLite3 as test DB.
 * {.fragment} Histogram-based computation to determine relative popularity of different video segments.
 
-## Demo
+## Demo: video processing
 
+<video data-autoplay src="res/basic_gen.webm" height="500px" width="400px" controls loop></video>
+  
+## Demo: Navigation
 
-## Navigation
+<video data-autoplay src="res/basic_navigation.webm" height="500px" width="400px" controls loop></video>
 
+## Demo: Heat-map
+
+<video data-autoplay src="res/heatmap.webm" height="500px" width="400px" controls loop></video>
 
 # Scheduled work
 
@@ -92,4 +93,5 @@ create image showing it
 # Thanks!
 
 
-[yt]: images/material-design.png "Material Design" { height: 90% }
+[yt]: res/yt.png "Youtube" { height: 90% }
+[extension]: res/extension.jpg "Voila" { height: 90% }
