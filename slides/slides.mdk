@@ -53,6 +53,9 @@ Beamer Theme  : singapore
 * {.fragment} Perform sampling of video frames for analysis in pre-processing step.
 * {.fragment} resemble.js used to compute grayscale 'diff' between successive video frames.
 * {.fragment} Adaptively change sampling frequency (delta) based on previous 'diff', bandwidth and time constraints.
+~~ Figure { #fig-p1 .fragment;}
+![scoring]
+~~
 
 ## Server-side processing
 
@@ -92,6 +95,6 @@ Beamer Theme  : singapore
 
 # Thanks!
 
-
+[scoring]: res/scoring.png "Scoring" { height: 300px }
 [yt]: res/yt.png "Youtube" { height: 90% }
 [extension]: res/extension.jpg "Voila" { height: 90% }
