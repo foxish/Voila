@@ -14,14 +14,30 @@ router.get('/', function(req, res, next) {
     var db = new sqlite3.Database(file);
 
     db.serialize(function() {
-        db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
+        db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
-
-    // req.body['videoID'] = 100;
-    var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
+    console.log(req.query.videoID);
+    var query = 'SELECT * FROM data WHERE videoID='+ req.query.videoID;
 
     db.all(query, function(err, rows) {
         //Convert back JSON from string pattern
+        //var content = JSON.stringify(rows);
+        //console.log(JSON.stringify(rows));
+       // var maxlen=0;
+       // var mostgranular=null;
+        
+      /*  for(var i=0;i<rows.length;i++){
+            var len=0;
+            for(var p in rows[i]["pattern"]){
+                len++;
+            }
+            if(len>maxlen){
+                mostgranular=rows[i];
+                maxlen=len;
+            }
+        }
+        
+        */
         res.json(JSON.stringify(rows));
     });
 
@@ -30,12 +46,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
     console.log(req.body);
-    
+
     //Move into common method
     var file = "./test.db";
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
+        db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
     //Move into common method
 
