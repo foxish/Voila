@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
     var db = new sqlite3.Database(file);
 
     db.serialize(function() {
-        db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
+        db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
 
     // req.body['videoID'] = 100;
@@ -30,12 +30,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res) {
     console.log(req.body);
-    
+
     //Move into common method
     var file = "./test.db";
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
+        db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
     //Move into common method
 
