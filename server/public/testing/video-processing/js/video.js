@@ -47,7 +47,7 @@ $(function() {
 	    	type: "GET",
 	    	url: API_URL,
 	    	dataType: "json",
-	    	data:{"videoId":"100" /* create video id from URL in extension */ },
+	    	data:{"videoID":"100" /* create video id from URL in extension */ },
 	    	success: function(result){
 	    	  heat = JSON.parse(result);
 	    	  console.log(heat);

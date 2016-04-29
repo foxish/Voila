@@ -17,11 +17,28 @@ router.get('/', function(req, res, next) {
         db.run("CREATE TABLE IF NOT EXISTS data (videoID INTEGER, pattern TEXT, timestamp INTEGER)");
     });
 
-    // req.body['videoID'] = 100;
+    req.body['videoID'] = 100;
     var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
 
     db.all(query, function(err, rows) {
         //Convert back JSON from string pattern
+        //var content = JSON.stringify(rows);
+        //console.log(JSON.stringify(rows));
+       // var maxlen=0;
+       // var mostgranular=null;
+        
+      /*  for(var i=0;i<rows.length;i++){
+            var len=0;
+            for(var p in rows[i]["pattern"]){
+                len++;
+            }
+            if(len>maxlen){
+                mostgranular=rows[i];
+                maxlen=len;
+            }
+        }
+        
+        */
         res.json(JSON.stringify(rows));
     });
 
