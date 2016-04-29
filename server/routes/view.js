@@ -16,8 +16,8 @@ router.get('/', function(req, res, next) {
     db.serialize(function() {
         db.run("CREATE TABLE IF NOT EXISTS data (videoID TEXT, pattern TEXT, timestamp INTEGER)");
     });
-
-    var query = 'SELECT * FROM data WHERE videoID='+ req.body['videoID'];
+    console.log(req.query.videoID);
+    var query = 'SELECT * FROM data WHERE videoID='+ req.query.videoID;
 
     db.all(query, function(err, rows) {
         //Convert back JSON from string pattern
